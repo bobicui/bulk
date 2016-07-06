@@ -1,0 +1,44 @@
+Description:
+This program is used to insert a batch of records to mysql db. 
+It support multiple-range, multiple-range means the items in all ranges is one-to-one correspondence. 
+The example is below:
+student_id: range(120~199)
+sort_order: range(1~80)
+status: 1
+then we will execute below sql:
+insert into table_student set student_id=120,sort_order=1,status=1;
+insert into table_student set student_id=121,sort_order=2,status=1;
+insert into table_student set student_id=122,sort_order=3,status=1;
+...
+insert into table_student set student_id=199,sort_order=80,status=1;
+
+#------------------------------Usage below--------------------------------
+Usage: bulk.py file
+file: the file that store the mysql connection and record info
+
+The file format is like below:
+database: "db_name"
+table: "table_name"
+hostname: "127.0.0.1"
+username: "root"
+password: "123456"
+port: "3306"
+charset: 'utf8'
+field1: "xxxx"
+field2: "yyyy"
+field3: "zzzz"
+field4: "kkkkkk"
+field5: 100
+field6: range("filename")
+field7: range(1~1000)
+field8: range(20~)
+
+NOTE: 
+1. the first 7 lines are must items, and the double quotation or single quotation is need
+2. if the field value is not number, it must be surrounded by double quotation or single quotation; if it is number, the quotation is forbidden
+3. the field value can be a range, there are three type of ranges: file range, number range, number range without range end. 
+   (1) file range: the items in range are stored in a file, the items are separated by space " ", and they will be treated as strings. It will be writen like range("filename"),the file name need to be surrounded by double quotation or single quotation.
+   (2) number range: in the number range, the quotation is forbidden, it will be writen like range(1~1000), the boundary value will be included.
+   (3) number range without range end: it will be writen like range(20~). The situation which has just one range and this range has no range end is not allowed! It must be used together with file range or number range. The quantity will be equal to the file range or number range. The number items will be increased from the given number.
+4. If there are more than one range, you need guarantee the quantity in all ranges are equal. If not, one error will occur.
+
